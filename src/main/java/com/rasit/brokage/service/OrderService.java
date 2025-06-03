@@ -165,9 +165,11 @@ public class OrderService {
             //opposite order transactions
             BigDecimal transactionAmount = fillQuantity.multiply(orderToMatch.getPrice());
             if (counterOrder.getOrderSide().equals(SideType.SELL)) {
+                assetDao.increaseUsableSizeofAsset(counterOrder.getCustomerId(), TRY_ASSET_NAME, transactionAmount);
                 assetDao.increaseSizeofAsset(counterOrder.getCustomerId(), TRY_ASSET_NAME, transactionAmount);
                 assetDao.reduceSizeofAsset(counterOrder.getCustomerId(), orderToMatch.getAssetName(), fillQuantity);
             } else {
+                assetDao.increaseUsableSizeofAsset(counterOrder.getCustomerId(), orderToMatch.getAssetName(), fillQuantity);
                 assetDao.increaseSizeofAsset(counterOrder.getCustomerId(), orderToMatch.getAssetName(), fillQuantity);
                 assetDao.reduceSizeofAsset(counterOrder.getCustomerId(), TRY_ASSET_NAME, transactionAmount);
             }
@@ -175,9 +177,11 @@ public class OrderService {
             // order transactions
             transactionAmount = fillQuantity.multiply(counterOrder.getPrice());
             if (orderToMatch.getOrderSide().equals(SideType.SELL)) {
+                assetDao.increaseUsableSizeofAsset(counterOrder.getCustomerId(), TRY_ASSET_NAME, transactionAmount);
                 assetDao.increaseSizeofAsset(orderToMatch.getCustomerId(), TRY_ASSET_NAME, transactionAmount);
                 assetDao.reduceSizeofAsset(orderToMatch.getCustomerId(), orderToMatch.getAssetName(), fillQuantity);
             } else {
+                assetDao.increaseUsableSizeofAsset(counterOrder.getCustomerId(), orderToMatch.getAssetName(), fillQuantity);
                 assetDao.increaseSizeofAsset(orderToMatch.getCustomerId(), orderToMatch.getAssetName(), fillQuantity);
                 assetDao.reduceSizeofAsset(orderToMatch.getCustomerId(), TRY_ASSET_NAME, transactionAmount);
             }

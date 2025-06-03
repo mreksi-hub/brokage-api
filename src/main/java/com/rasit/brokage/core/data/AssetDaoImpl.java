@@ -51,6 +51,12 @@ public class AssetDaoImpl implements AssetDao {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void increaseUsableSizeofAsset(String customerId, String assetToUpdateSize, BigDecimal transactionAmount) {
+        assetsRepository.addToUsableSizeByCustomerIdAndAssetName(customerId, StringUtils.lowerCase(assetToUpdateSize), transactionAmount);
+    }
+
+    @Override
     public AssetEntity save(AssetEntity asset) {
         return assetsRepository.save(asset);
     }
